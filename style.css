@@ -200,24 +200,6 @@ body {
   font-size: 0.96rem;
 }
 
-.result-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.result-tag {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.14);
-  color: white;
-  font-size: 0.78rem;
-  font-weight: 600;
-}
-
 .summary-content {
   color: white;
   line-height: 1.7;

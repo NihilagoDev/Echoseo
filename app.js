@@ -4,7 +4,7 @@ const hitsContent = document.getElementById("hitsContent");
 const summaryContent = document.getElementById("summaryContent");
 const scoreValue = document.getElementById("scoreValue");
 
-const API_URL = "http://127.0.0.1:8000/search";
+const API_URL = "http://127.0.0.1:8000/api/search";
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -147,9 +147,9 @@ function showError(message) {
     <div class="summary-block">
       <h3>Suggestions</h3>
       <ul>
-        <li>Check if FastAPI is still running on 127.0.0.1:8000</li>
-        <li>Check whether the /search route exists</li>
-        <li>Check if your API key is configured correctly</li>
+        <li>Check if the backend is deployed correctly</li>
+        <li>Check whether /api/search exists</li>
+        <li>Check if your SERPAPI key is configured correctly</li>
       </ul>
     </div>
   `;

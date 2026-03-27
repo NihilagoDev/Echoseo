@@ -8,7 +8,13 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # lock this down later
+    allow_origins=[
+        "https://echoseo.hartman.sd-lab.nl",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:5500",
+        "http://127.0.0.1:5500"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -23,7 +29,7 @@ class SearchRequest(BaseModel):
 def root():
     return {"status": "ok"}
 
-@app.post("/search")
+@app.post("/api/search")
 def search(req: SearchRequest):
     if not SERPAPI_KEY:
         raise HTTPException(status_code=500, detail="SERPAPI_KEY not set")
@@ -36,7 +42,11 @@ def search(req: SearchRequest):
     }
 
     try:
-        response = requests.get("https://serpapi.com/search.json", params=params, timeout=20)
+        response = requests.get(
+            "https://serpapi.com/search.json",
+            params=params,
+            timeout=20
+        )
         response.raise_for_status()
         data = response.json()
     except requests.RequestException as e:
