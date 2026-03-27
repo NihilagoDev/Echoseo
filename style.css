@@ -1,0 +1,191 @@
+:root {
+  --bg: #ececec;
+  --peach: #efb38d;
+  --peach-dark: #e7a57c;
+  --text: #111111;
+  --white-soft: rgba(255, 255, 255, 0.88);
+  --radius-xl: 34px;
+  --radius-pill: 999px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  padding: 24px;
+}
+
+.dashboard {
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+.topbar {
+  margin-bottom: 18px;
+}
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.logo-line {
+  width: 5px;
+  height: 54px;
+  border-radius: 999px;
+  background: var(--peach);
+}
+
+.logo {
+  margin: 0;
+  font-family: "Baloo 2", sans-serif;
+  font-size: 3rem;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.left-column,
+.right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.search-bar {
+  background: var(--peach);
+  border-radius: var(--radius-pill);
+  padding: 14px 24px;
+}
+
+.search-bar input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  text-align: center;
+  color: var(--white-soft);
+  font-family: "Baloo 2", sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.search-bar input::placeholder {
+  color: var(--white-soft);
+}
+
+.card {
+  background: var(--peach);
+  border-radius: var(--radius-xl);
+  min-height: 520px;
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.card h2 {
+  margin: 0;
+  text-align: center;
+  color: var(--white-soft);
+  font-family: "Baloo 2", sans-serif;
+  font-size: 3.2rem;
+  line-height: 1.05;
+  font-weight: 700;
+}
+
+.card-content {
+  margin-top: 26px;
+  color: #fffaf7;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.summary-card {
+  min-height: 634px;
+}
+
+.score-card {
+  align-self: flex-end;
+  width: 124px;
+  min-height: 122px;
+  background: var(--peach);
+  border-radius: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--white-soft);
+  text-align: center;
+  padding: 12px;
+}
+
+.score-card span {
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+
+.score-card strong {
+  font-size: 2rem;
+  color: white;
+}
+
+.result-list,
+.suggestion-list {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.result-list li,
+.suggestion-list li {
+  margin-bottom: 10px;
+}
+
+@media (max-width: 980px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .score-card {
+    align-self: stretch;
+    width: 100%;
+    min-height: 88px;
+    border-radius: 24px;
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .card,
+  .summary-card {
+    min-height: 360px;
+  }
+
+  .card h2 {
+    font-size: 2.3rem;
+  }
+
+  .search-bar input {
+    font-size: 1.5rem;
+  }
+
+  .logo {
+    font-size: 2.3rem;
+  }
+}
