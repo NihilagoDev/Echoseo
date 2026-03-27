@@ -1,0 +1,4 @@
+fastapi
+uvicorn
+requests
+pydanticpython3 --version

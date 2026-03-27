@@ -4,6 +4,8 @@ const hitsContent = document.getElementById("hitsContent");
 const summaryContent = document.getElementById("summaryContent");
 const scoreValue = document.getElementById("scoreValue");
 
+const API_URL = "http://127.0.0.1:8000/search";
+
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -13,7 +15,7 @@ form.addEventListener("submit", async (event) => {
   setLoadingState(query);
 
   try {
-    const response = await fetch("http://localhost:8000/search", {
+    const response = await fetch(API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -21,82 +23,134 @@ form.addEventListener("submit", async (event) => {
       body: JSON.stringify({ query })
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error("Search request failed");
+      const detail = data?.detail || "Search request failed";
+      throw new Error(detail);
     }
 
-    const data = await response.json();
-    renderResults(data);
+    renderResults(data, query);
   } catch (error) {
-    showError(error.message);
+    showError(error.message || "Unknown error");
   }
 });
 
 function setLoadingState(query) {
   scoreValue.textContent = "...";
+
   hitsContent.className = "hits-content";
   hitsContent.innerHTML = `
-    <div class="search-result">
+    <article class="search-result">
       <div class="result-topline">Searching</div>
       <div class="result-url">${escapeHtml(query)}</div>
-      <p class="result-snippet">Fetching live search engine results...</p>
-    </div>
+      <div class="result-title">Fetching live results...</div>
+      <p class="result-snippet">
+        Looking up search engine hits, titles and snippets.
+      </p>
+    </article>
   `;
 
   summaryContent.className = "summary-content";
   summaryContent.innerHTML = `
     <div class="summary-block">
       <h3>Summary</h3>
-      <p>Waiting for live results.</p>
+      <p>Waiting for the proxy response.</p>
+    </div>
+    <div class="summary-block">
+      <h3>Suggestions</h3>
+      <ul>
+        <li>Preparing recommendations...</li>
+      </ul>
     </div>
   `;
 }
 
-function renderResults(data) {
-  scoreValue.textContent = data.score ?? "--";
+function renderResults(data, query) {
+  const score = data?.score ?? "--";
+  const summary = data?.summary ?? `No summary returned for "${query}".`;
+  const suggestions = Array.isArray(data?.suggestions) ? data.suggestions : [];
+  const hits = Array.isArray(data?.hits) ? data.hits : [];
 
-  if (!data.hits || data.hits.length === 0) {
+  scoreValue.textContent = score;
+
+  if (hits.length === 0) {
+    hitsContent.className = "hits-content";
     hitsContent.innerHTML = `
       <div class="empty-state">
-        No indexed results were returned for this query.
+        No search results were returned for <strong>${escapeHtml(query)}</strong>.
       </div>
     `;
   } else {
     hitsContent.className = "hits-content";
-    hitsContent.innerHTML = data.hits.map(hit => `
-      <article class="search-result">
-        <div class="result-topline">${escapeHtml(hit.source || "Search result")}</div>
-        <div class="result-url">${escapeHtml(hit.display_url || hit.url || "")}</div>
-        <a class="result-title" href="${escapeAttribute(hit.url || "#")}" target="_blank" rel="noopener noreferrer">
-          ${escapeHtml(hit.title || "Untitled result")}
-        </a>
-        <p class="result-snippet">${escapeHtml(hit.snippet || "")}</p>
-      </article>
-    `).join("");
+    hitsContent.innerHTML = hits
+      .map((hit) => {
+        const title = hit?.title || "Untitled result";
+        const url = hit?.url || "#";
+        const displayUrl = hit?.display_url || hit?.url || "";
+        const snippet = hit?.snippet || "No snippet available.";
+        const source = hit?.source || "Search result";
+
+        return `
+          <article class="search-result">
+            <div class="result-topline">${escapeHtml(source)}</div>
+            <div class="result-url">${escapeHtml(displayUrl)}</div>
+            <a
+              class="result-title"
+              href="${escapeAttribute(url)}"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              ${escapeHtml(title)}
+            </a>
+            <p class="result-snippet">${escapeHtml(snippet)}</p>
+          </article>
+        `;
+      })
+      .join("");
   }
 
   summaryContent.className = "summary-content";
   summaryContent.innerHTML = `
     <div class="summary-block">
       <h3>Summary</h3>
-      <p>${escapeHtml(data.summary || "No summary available.")}</p>
+      <p>${escapeHtml(summary)}</p>
     </div>
     <div class="summary-block">
       <h3>Suggestions</h3>
-      <ul>
-        ${(data.suggestions || []).map(item => `<li>${escapeHtml(item)}</li>`).join("")}
-      </ul>
+      ${
+        suggestions.length
+          ? `<ul>${suggestions.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`
+          : `<p>No suggestions available.</p>`
+      }
     </div>
   `;
 }
 
 function showError(message) {
   scoreValue.textContent = "--";
-  hitsContent.innerHTML = `<div class="empty-state">Error: ${escapeHtml(message)}</div>`;
+
+  hitsContent.className = "hits-content";
+  hitsContent.innerHTML = `
+    <div class="empty-state">
+      Could not fetch live search results.<br />
+      <strong>${escapeHtml(message)}</strong>
+    </div>
+  `;
+
+  summaryContent.className = "summary-content";
   summaryContent.innerHTML = `
     <div class="summary-block">
       <h3>Summary</h3>
-      <p>The live search request could not be completed.</p>
+      <p>The frontend could not get a valid response from the search proxy.</p>
+    </div>
+    <div class="summary-block">
+      <h3>Suggestions</h3>
+      <ul>
+        <li>Check if FastAPI is still running on 127.0.0.1:8000</li>
+        <li>Check whether the /search route exists</li>
+        <li>Check if your API key is configured correctly</li>
+      </ul>
     </div>
   `;
 }
