@@ -6,7 +6,7 @@
   <title>Echoseo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -22,16 +22,20 @@
       <div class="left-column">
         <form class="search-bar" id="searchForm">
           <input
-            type="text"
             id="searchInput"
+            type="text"
             placeholder="search bar"
             aria-label="Search"
           />
         </form>
 
-        <section class="card large-card" id="hitsCard">
-          <h2>search hits</h2>
-          <div id="hitsContent" class="card-content"></div>
+        <section class="card hits-card">
+          <div class="card-heading">
+            <h2>search hits</h2>
+          </div>
+          <div id="hitsContent" class="hits-content empty-state">
+            Search for a username, email or handle to view indexed results.
+          </div>
         </section>
       </div>
 
@@ -42,8 +46,12 @@
         </div>
 
         <section class="card summary-card">
-          <h2>summary &<br />suggestions</h2>
-          <div id="summaryContent" class="card-content"></div>
+          <div class="card-heading">
+            <h2>summary & suggestions</h2>
+          </div>
+          <div id="summaryContent" class="summary-content empty-state">
+            A short summary and guidance will appear here.
+          </div>
         </section>
       </div>
     </section>

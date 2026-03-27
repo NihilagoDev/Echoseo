@@ -1,10 +1,14 @@
 :root {
-  --bg: #ececec;
-  --peach: #efb38d;
-  --peach-dark: #e7a57c;
+  --bg: #ebebeb;
+  --peach: #efb48e;
+  --peach-strong: #e8a67b;
+  --panel-text: #fff7f2;
   --text: #111111;
-  --white-soft: rgba(255, 255, 255, 0.88);
+  --muted: rgba(255, 255, 255, 0.82);
+  --result-text: #fffdfb;
+  --result-link: #fff;
   --radius-xl: 34px;
+  --radius-lg: 26px;
   --radius-pill: 999px;
 }
 
@@ -16,8 +20,8 @@ html, body {
   margin: 0;
   min-height: 100%;
   background: var(--bg);
-  color: var(--text);
   font-family: "Inter", sans-serif;
+  color: var(--text);
 }
 
 body {
@@ -36,7 +40,7 @@ body {
 .logo-wrap {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 18px;
 }
 
 .logo-line {
@@ -56,7 +60,7 @@ body {
 
 .layout {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: 1.15fr 0.85fr;
   gap: 18px;
   align-items: start;
 }
@@ -71,55 +75,51 @@ body {
 .search-bar {
   background: var(--peach);
   border-radius: var(--radius-pill);
-  padding: 14px 24px;
+  padding: 14px 22px;
 }
 
 .search-bar input {
   width: 100%;
-  border: 0;
-  outline: 0;
+  border: none;
+  outline: none;
   background: transparent;
   text-align: center;
-  color: var(--white-soft);
   font-family: "Baloo 2", sans-serif;
   font-size: 2rem;
   font-weight: 700;
+  color: var(--panel-text);
 }
 
 .search-bar input::placeholder {
-  color: var(--white-soft);
+  color: var(--panel-text);
 }
 
 .card {
   background: var(--peach);
   border-radius: var(--radius-xl);
-  min-height: 520px;
-  padding: 36px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  position: relative;
+  padding: 28px;
 }
 
-.card h2 {
-  margin: 0;
-  text-align: center;
-  color: var(--white-soft);
-  font-family: "Baloo 2", sans-serif;
-  font-size: 3.2rem;
-  line-height: 1.05;
-  font-weight: 700;
-}
-
-.card-content {
-  margin-top: 26px;
-  color: #fffaf7;
-  font-size: 1rem;
-  line-height: 1.6;
+.hits-card {
+  min-height: 550px;
 }
 
 .summary-card {
-  min-height: 634px;
+  min-height: 640px;
+}
+
+.card-heading {
+  margin-bottom: 18px;
+}
+
+.card-heading h2 {
+  margin: 0;
+  text-align: center;
+  color: var(--panel-text);
+  font-family: "Baloo 2", sans-serif;
+  font-size: 2.8rem;
+  line-height: 1.05;
+  font-weight: 700;
 }
 
 .score-card {
@@ -132,7 +132,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: var(--white-soft);
+  color: var(--panel-text);
   text-align: center;
   padding: 12px;
 }
@@ -147,15 +147,105 @@ body {
   color: white;
 }
 
-.result-list,
-.suggestion-list {
+.empty-state {
+  color: rgba(255, 255, 255, 0.92);
+  text-align: center;
+  padding: 40px 20px;
+  line-height: 1.7;
+}
+
+.hits-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.search-result {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 22px;
+  padding: 16px 18px;
+}
+
+.result-topline {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.92);
+  margin-bottom: 6px;
+}
+
+.result-url {
+  display: inline-block;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 8px;
+  word-break: break-all;
+}
+
+.result-title {
+  display: inline-block;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--result-link);
+  text-decoration: none;
+  margin-bottom: 8px;
+}
+
+.result-title:hover {
+  text-decoration: underline;
+}
+
+.result-snippet {
+  margin: 0;
+  color: var(--result-text);
+  line-height: 1.6;
+  font-size: 0.96rem;
+}
+
+.result-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.result-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: white;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.summary-content {
+  color: white;
+  line-height: 1.7;
+}
+
+.summary-block + .summary-block {
+  margin-top: 20px;
+}
+
+.summary-block h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.summary-block p,
+.summary-block li {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.summary-block ul {
   margin: 0;
   padding-left: 18px;
 }
 
-.result-list li,
-.suggestion-list li {
-  margin-bottom: 10px;
+.summary-block li + li {
+  margin-top: 8px;
 }
 
 @media (max-width: 980px) {
@@ -172,12 +262,7 @@ body {
     gap: 12px;
   }
 
-  .card,
-  .summary-card {
-    min-height: 360px;
-  }
-
-  .card h2 {
+  .logo {
     font-size: 2.3rem;
   }
 
@@ -185,7 +270,7 @@ body {
     font-size: 1.5rem;
   }
 
-  .logo {
-    font-size: 2.3rem;
+  .card-heading h2 {
+    font-size: 2.2rem;
   }
 }
