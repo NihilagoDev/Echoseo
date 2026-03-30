@@ -4,7 +4,7 @@ const hitsContent = document.getElementById("hitsContent");
 const summaryContent = document.getElementById("summaryContent");
 const scoreValue = document.getElementById("scoreValue");
 
-const API_URL = "http://127.0.0.1:8000/api/search";
+const API_URL = "https://tyler.deploy01.nl/api/search";
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
