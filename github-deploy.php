@@ -1,37 +1,50 @@
 <?php
 
-$webhookUrl = 'http://127.0.0.1:8443/modules/git/public/web-hook.php?uuid=4162bb31-29e5-35e4-47e1-65ac464c9b76';
+$pleskWebhookUrl = 'http://127.0.0.1:8443/modules/git/public/web-hook.php?uuid=4162bb31-29e5-35e4-47e1-65ac464c9b76';
 
-$payload = file_get_contents('php://input');
-if ($payload === false || $payload === '') {
-    $payload = '{}';
+$githubEvent = $_SERVER['HTTP_X_GITHUB_EVENT'] ?? '';
+$requestMethod = $_SERVER['REQUEST_METHOD'] ?? '';
+
+$rawPayload = file_get_contents('php://input');
+if ($rawPayload === false || $rawPayload === '') {
+    $rawPayload = '{}';
 }
 
-$ch = curl_init($webhookUrl);
+$headers = [
+    'Content-Type: application/json',
+    'User-Agent: github-deploy-forwarder',
+    'Content-Length: ' . strlen($rawPayload),
+];
+
+$ch = curl_init($pleskWebhookUrl);
 curl_setopt_array($ch, [
     CURLOPT_POST => true,
-    CURLOPT_POSTFIELDS => $payload,
-    CURLOPT_HTTPHEADER => [
-        'Content-Type: application/json',
-        'Content-Length: ' . strlen($payload),
-    ],
+    CURLOPT_POSTFIELDS => $rawPayload,
+    CURLOPT_HTTPHEADER => $headers,
     CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_HEADER => true,
     CURLOPT_CONNECTTIMEOUT => 10,
     CURLOPT_TIMEOUT => 30,
-    CURLOPT_SSL_VERIFYPEER => false,
-    CURLOPT_SSL_VERIFYHOST => false,
 ]);
 
 $response = curl_exec($ch);
+$curlError = curl_error($ch);
 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-$error = curl_error($ch);
+$headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
 curl_close($ch);
+
+$responseHeaders = substr($response ?: '', 0, $headerSize);
+$responseBody = substr($response ?: '', $headerSize);
 
 header('Content-Type: application/json');
 
 echo json_encode([
-    'success' => $error === '' && $httpCode >= 200 && $httpCode < 300,
-    'http_code' => $httpCode,
-    'curl_error' => $error,
-    'response' => $response,
+    'received' => true,
+    'request_method' => $requestMethod,
+    'github_event' => $githubEvent,
+    'forwarded_to' => $pleskWebhookUrl,
+    'plesk_http_code' => $httpCode,
+    'plesk_curl_error' => $curlError,
+    'plesk_response_headers' => $responseHeaders,
+    'plesk_response_body' => $responseBody,
 ], JSON_PRETTY_PRINT);
