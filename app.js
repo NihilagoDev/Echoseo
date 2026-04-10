@@ -6,7 +6,7 @@ const scoreValue     = document.getElementById('scoreValue');
 
 const API_URL = 'https://tyler.deploy01.nl/api/search';
 
-// test line
+// test line to test autodeploy using php
 
 // -------------------------------------------------------
 // Submit handler
