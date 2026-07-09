@@ -1,68 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Echoseo</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <main class="dashboard">
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <title>EchoSEO</title>
 
-    <header class="topbar">
-      <div class="logo-wrap">
-        <span class="logo-line"></span>
-        <h1 class="logo">Echoseo</h1>
-      </div>
-    </header>
+    <link rel="stylesheet" href="style.css" />
 
-    <section class="layout">
-
-      <!-- LEFT COLUMN -->
-      <div class="left-column">
-
-        <form class="search-bar" id="searchForm">
-          <input
-            id="searchInput"
-            type="text"
-            placeholder="search bar"
-            aria-label="Search"
-          />
-        </form>
-
-        <section class="card hits-card">
-          <div class="card-heading">
-            <h2>search hits</h2>
-          </div>
-          <div id="hitsContent" class="hits-content empty-state">
-            Search for a username, email or handle to view indexed results.
-          </div>
-        </section>
-
-      </div>
-
-      <!-- RIGHT COLUMN -->
-      <div class="right-column">
-
-        <div class="score-card">
-          <span>Score</span>
-          <strong id="scoreValue">--</strong>
+    <!-- Baloo 2 voor logo / headings -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&display=swap"
+    />
+  </head>
+  <body>
+    <main class="dashboard">
+      <!-- HEADER -->
+      <header class="topbar">
+        <div class="logo-wrap">
+          <small>Social account seo intelligence</small>
+          <h1 class="logo">EchoSEO</h1>
         </div>
 
-        <section class="card summary-card">
+        <div class="header-score">
+          <div class="header-score-label">SEO score</div>
+          <strong id="scoreValue">--</strong>
+        </div>
+      </header>
+
+      <!-- SEARCH -->
+      <section class="search-panel">
+        <form id="searchForm">
+          <div class="search-bar">
+            <input
+              id="searchInput"
+              type="text"
+              placeholder="Search a username, email or handle"
+              autocomplete="off"
+            />
+            <button type="submit">Analyse</button>
+          </div>
+        </form>
+        <p class="search-help">
+          Demo inputs: <strong>goede username</strong> of
+          <strong>slechte username</strong>
+        </p>
+      </section>
+
+      <!-- RESULT + ANALYSE KAARTEN -->
+      <section class="layout">
+        <!-- LINKS: RESULT OVERVIEW -->
+        <article class="card hits-card">
           <div class="card-heading">
-            <h2>summary &amp; suggestions</h2>
+            <h2>gevonden accounts</h2>
           </div>
-          <div id="summaryContent" class="summary-content empty-state">
-            A short summary and guidance will appear here.
+
+          <div id="hitsContent">
+            <!-- wordt gevuld door app.js -->
           </div>
-        </section>
+        </article>
 
-      </div>
+        <!-- RECHTS: SEO ANALYSIS -->
+        <article class="card summary-card">
+          <div class="card-heading">
+            <h2>samenvatting & suggesties</h2>
+          </div>
 
-    </section>
-  </main>
+          <div id="summaryContent">
+            <!-- wordt gevuld door app.js -->
+          </div>
+        </article>
+      </section>
+    </main>
 
-  <script src="app.js"></script>
-</body>
+    <script src="app.js"></script>
+  </body>
 </html>
